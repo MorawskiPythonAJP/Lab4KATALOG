@@ -30,13 +30,12 @@ zasoby = [
         "rok": "1982",
         "tagi" : {"ZSRR", "AS", "GEN4"}
     },
-
 ]
 
 def read_name_year(prompt):
     print(prompt)
     input_ = input()
-    if input_ is None:
+    if len(input_) == 0 :
         return None, None
     try:
         int(input_)
@@ -68,6 +67,32 @@ def display_catalog():
     for item in zasoby:
         display_item(item)
 
+def display_all_tags():
+    all_tags = set()
+
+    for item in zasoby:
+        all_tags.update(item['tagi'])
+    print("Wszystkie tagi:")
+    for tag in all_tags:
+        print(tag)
+
+def get_by_tag(prompt):
+    print(prompt)
+    input_ = input()
+    if len(input_) == 0 :
+        return None
+    requested_items = []
+    for item in zasoby:
+        if input_ in item.get('tagi'):
+            requested_items.append(item)
+    return requested_items
+
+def search_by_tag():
+    requested_items = get_by_tag("Wprowadź tag(pozostaw puste pole by wrócić do menu)")
+    if not requested_items is None:
+        for item in requested_items:
+            display_item(item)
+
 def main():
     try:
         print("Wybierz opcje")
@@ -90,8 +115,10 @@ def main():
             search_by_name_or_year()
             main()
         elif option_index == 3:
+            display_all_tags()
             main()
         elif option_index == 4:
+            search_by_tag()
             main()
         elif option_index == 5:
             main()
